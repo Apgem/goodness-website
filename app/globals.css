@@ -1,0 +1,265 @@
+@import "tailwindcss";
+
+@theme {
+  /* palette */
+  --color-bg: #0a0a0f;
+  --color-surface: #111118;
+  --color-surface-2: #16161f;
+  --color-accent: #00d4ff;
+  --color-accent-dim: rgb(0 212 255 / 0.1);
+  --color-line: rgb(255 255 255 / 0.07);
+  --color-line-strong: rgb(255 255 255 / 0.14);
+  --color-ink: #f0f0f8;
+  --color-muted: #8888a8;
+  --color-faint: #555570;
+  --color-success: #00e676;
+
+  /* fluid display type. Hero is deliberately restrained vs the section
+     headings — it shares the viewport with the video and must still fit on a
+     short laptop window (measured: 745px of h1 in a 529px viewport was the
+     previous value overflowing). */
+  --text-hero: clamp(1.9rem, 4.4vw, 4.25rem);
+  --text-display: clamp(2.5rem, 7vw, 6.5rem);
+  --text-title: clamp(1.75rem, 3vw, 2.75rem);
+
+  /* rhythm */
+  --spacing-section: clamp(6rem, 14vh, 11rem);
+
+  --radius-control: 10px;
+  --radius-card: 14px;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Values that reference variables defined OUTSIDE the theme must live in an
+   `inline` block, or the generated utility emits an unresolvable indirection. */
+@theme inline {
+  --font-display: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* NO scroll-behavior: smooth — Lenis owns scrolling and this fights it.
+       Next 16 removed its own scroll-behavior override, so nothing restores
+       this for us; leaving it unset is deliberate, not an omission. */
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    overscroll-behavior-y: none;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  /* Anchor targets clear the fixed navbar. */
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  /* Hide the native cursor only where the custom one is actually running. */
+  html.has-cursor,
+  html.has-cursor * {
+    cursor: none;
+  }
+}
+
+@utility grid-bg {
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 40%, transparent 100%);
+}
+
+/* Display headings: tight tracking + tight leading is most of what separates
+   "premium" from "large text". */
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* ---------------------------------------------------------------------------
+   Preloader — server-rendered in layout.tsx and styled entirely without JS so
+   there is no flash of unstyled content before hydration. The client
+   controller adds .is-done to fade it out.
+   --------------------------------------------------------------------------- */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--color-bg);
+  transition:
+    opacity 0.7s var(--ease-expo),
+    visibility 0.7s;
+}
+
+#preloader.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#preloader .bar {
+  width: min(220px, 40vw);
+  height: 1px;
+  background: var(--color-line-strong);
+  overflow: hidden;
+}
+
+#preloader .bar > i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  animation: preload 1.2s var(--ease-expo) forwards;
+}
+
+@keyframes preload {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Cursor-follow spotlight for cards. A soft neon radial tracks the pointer
+   (--mx/--my set in SpotlightCard.tsx) and fades in on hover.
+
+   `isolation: isolate` creates a stacking context so the glow can sit at
+   z-index -1 — above the card's own background but below all content — without
+   touching any child. Keeps text crisp and doesn't disturb absolutely-
+   positioned decorations. overflow-hidden on the card clips the glow to shape. */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(0 212 255 / 0.16),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-expo);
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+/* Floating hero cards — gentle vertical drift. Each card sets its own delay
+   and duration via inline style so they don't move in lockstep. */
+.float-card {
+  animation: float-y var(--float-dur, 6s) ease-in-out var(--float-delay, 0s)
+    infinite;
+}
+
+/* Entrance: cards fade in after the hero headline has landed. Opacity-only on
+   purpose — float-y owns `transform`, so composing them here avoids two
+   animations fighting over the same property (which would freeze the float). */
+.reveal-card {
+  opacity: 0;
+  animation:
+    float-y var(--float-dur, 6s) ease-in-out var(--float-delay, 0s) infinite,
+    card-in 0.9s ease-out 1.9s forwards;
+}
+
+@keyframes card-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(var(--float-amp, -12px));
+  }
+}
+
+/* Marquee: the track holds two identical copies, so translating by exactly
+   -50% lands on the start of the second copy and the loop is seamless. */
+.marquee-track {
+  animation: marquee 38s linear infinite;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Custom cursor ring. Transform is written every frame by JS, so only the
+   hover-state properties transition here — transitioning transform too would
+   fight the damping. */
+.cursor-ring {
+  transition:
+    width 0.35s var(--ease-expo),
+    height 0.35s var(--ease-expo),
+    background-color 0.35s var(--ease-expo),
+    border-color 0.35s var(--ease-expo);
+}
+
+.cursor-ring.is-hover {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-color: var(--color-accent);
+  background-color: var(--color-accent-dim);
+}
+
+/* Elements revealed by GSAP start hidden — but only when JS will actually run,
+   otherwise a no-JS visitor gets a blank page. */
+.js .reveal {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #preloader .bar > i {
+    animation-duration: 0.01ms;
+  }
+  /* Must be `none`, not the 0.01ms below: an infinite animation with a
+     near-zero duration loops thousands of times a second. */
+  .marquee-track,
+  .float-card {
+    animation: none;
+  }
+  .js .reveal {
+    opacity: 1;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
