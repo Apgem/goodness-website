@@ -77,11 +77,13 @@ export function Reveal({
   className = "",
   delay = 0,
   y = 26,
+  as: Tag = "div",
 }: {
   children: React.ReactNode;
   className?: string;
   delay?: number;
   y?: number;
+  as?: "div" | "span";
 }) {
   const root = useRef<HTMLDivElement>(null);
 
@@ -112,8 +114,8 @@ export function Reveal({
   }, [delay, y]);
 
   return (
-    <div ref={root} className={`reveal ${className}`}>
+    <Tag ref={root as never} className={`reveal ${className}`}>
       {children}
-    </div>
+    </Tag>
   );
 }

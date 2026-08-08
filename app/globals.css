@@ -207,6 +207,62 @@
   }
 }
 
+/* ShinyButton: accent-tinted-to-black gradient, a glowing rim, and a
+   periodic diagonal light sweep. Pauses off-screen for most of the sweep
+   cycle rather than looping continuously — constant motion reads as
+   nervous on a CTA the user is meant to actually read. */
+.shiny-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--color-accent) 55%, black) 0%,
+    color-mix(in srgb, var(--color-accent) 26%, black) 65%,
+    color-mix(in srgb, var(--color-accent) 10%, black) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.1),
+    0 0 32px -6px color-mix(in srgb, var(--color-accent) 65%, transparent);
+  transition: background 0.5s var(--ease-expo);
+}
+
+/* Hover reverses the gradient stops — the black and accent ends swap places
+   instead of just brightening. */
+.shiny-btn:hover {
+  background: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--color-accent) 10%, black) 0%,
+    color-mix(in srgb, var(--color-accent) 26%, black) 35%,
+    color-mix(in srgb, var(--color-accent) 55%, black) 100%
+  );
+}
+
+.shiny-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgb(255 255 255 / 0.4) 50%,
+    transparent 70%
+  );
+  transform: translateX(-130%);
+  animation: shine 3.4s var(--ease-expo) infinite;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-130%);
+  }
+  28%,
+  100% {
+    transform: translateX(130%);
+  }
+}
+
 /* Marquee: the track holds two identical copies, so translating by exactly
    -50% lands on the start of the second copy and the loop is seamless. */
 .marquee-track {
