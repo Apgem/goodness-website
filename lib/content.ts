@@ -48,7 +48,9 @@ export const nav = [
 
 export const hero = {
   badge: "Full Stack SaaS Developer · Claude AI Integration",
-  headline: ["I Help Founders, B2B & Agencies", "Build Production SaaS"],
+  headlineLead: "I Help",
+  audiences: ["Founders", "B2B Operators", "Agencies", "Startups"],
+  headlineSecondLine: "Build Production SaaS",
   headlineAccent: "That Actually Works.",
   sub: "Not just demos. Not just prototypes. Production-ready SaaS applications built with Claude AI, Next.js, Supabase, and Stripe — from first commit to live users.",
   ctaPrimary: "Book a Discovery Call",
@@ -110,27 +112,29 @@ export const services = {
       title: "Full-Stack SaaS Development",
       body: "End-to-end SaaS applications built for real users. Multi-tenant architecture, Supabase with row-level security, Stripe billing, real-time features, and clean documentation on handoff. Not a prototype — a product.",
       tags: ["Next.js", "Supabase", "Stripe", "TypeScript"],
+      image: "/work-saas-development.jpg",
     },
     {
       title: "Claude AI & LLM Integration",
       body: "Claude API integrated as the core intelligence layer of your product — not a chatbot widget bolted on at the end. Intent scoring, structured output extraction, personalized content generation, and reliable JSON output every time.",
       tags: ["Claude API", "Prompt Engineering", "AI Agents", "LLM"],
+      image: "/work-claude-ai-integration.jpg",
     },
     {
       title: "AI Automation & Agent Development",
       body: "Automation pipelines that connect your CRM, lead sources, and outreach tools into one loop that runs without you. RAG agents that answer from your own documents, pricing, and policies instead of guessing — with retrieval you can audit. GoHighLevel, n8n, Make, Twilio, Resend, wired together properly with error handling and retry logic.",
       tags: ["RAG Agents", "GoHighLevel", "n8n", "Twilio", "Webhooks"],
+      image: "/work-ai-automation.jpg",
     },
     {
       title: "Chatbot & AI Integration",
       body: "Custom AI chatbots and LLM-powered workflows integrated into your existing stack. Built to return reliable, structured output regardless of what the user sends — not just when the input is clean.",
       tags: ["Chatbot", "API Integration", "Automation", "Claude API"],
+      image: "/work-chatbot-integration.jpg",
     },
     {
       title: "Premium Web Development & Management",
-      // This card spans the full grid width, so it carries a longer body than
-      // the others by design — a short paragraph looks stranded across 2 cols.
-      body: "High-end marketing sites, landing pages, and web apps built to perform — not just to look good in a screenshot. Every build ships fast on real devices and real networks, scores properly on Core Web Vitals, works with a keyboard and a screen reader, and is structured so search engines can actually read it. Animation and 3D where it earns its place, never where it costs you a conversion. And I don't disappear at launch: hosting and domains configured properly, SSL and uptime monitored, dependencies and security patches kept current, analytics wired so you can see what's working, plus content edits and new sections whenever you need them. You get a site that keeps performing months after handoff — and one person who already knows the codebase when it needs to change.",
+      body: "Premium, high-performing websites engineered to convert — built fast, accessible, and SEO-ready from day one, then actively maintained, monitored, and improved long after launch so performance never quietly decays over time.",
       tags: [
         "Next.js",
         "Vercel",
@@ -139,6 +143,7 @@ export const services = {
         "Accessibility",
         "Ongoing Care",
       ],
+      image: "/work-web-performance.jpg",
     },
   ],
 } as const;
@@ -247,6 +252,12 @@ export const process = {
       title: "Ship & Hand Off",
       when: "Days 19–21",
       body: "Deployed to Vercel, connected to your domain, Stripe live, all integrations tested against real services. Full documentation so your team can maintain it without me.",
+    },
+    {
+      n: "05",
+      title: "Management & Support",
+      when: "Ongoing",
+      body: "Launch isn't the finish line. I stay on for monitoring, security patches, performance tuning, and new features — so the product keeps improving instead of quietly decaying. Take it in-house whenever you're ready; there's no lock-in.",
     },
   ],
 } as const;

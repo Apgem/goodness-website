@@ -4,6 +4,8 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger, EASE } from "@/lib/gsap";
 import { scrollToSection } from "@/components/providers/SmoothScrollProvider";
 import Magnetic from "@/components/ui/Magnetic";
+import { SlideTabs } from "@/components/ui/slide-tabs";
+import { ShinyButton } from "@/components/ui/shiny-button";
 import { nav, site } from "@/lib/content";
 
 export default function Navbar() {
@@ -57,29 +59,13 @@ export default function Navbar() {
           <span className="text-accent">{site.brandAccent}</span>
         </a>
 
-        <nav className="hidden items-center gap-9 md:flex">
-          {nav.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              onClick={go(item.href)}
-              className="font-mono text-xs uppercase tracking-[0.14em] text-muted transition-colors duration-300 hover:text-ink"
-            >
-              {item.label}
-            </a>
-          ))}
+        <nav className="hidden md:block">
+          <SlideTabs tabs={nav} onSelect={(href, e) => go(href)(e)} />
         </nav>
 
         <div className="hidden md:block">
           <Magnetic strength={0.4}>
-            <a
-              href={site.calendly}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center rounded-control bg-accent px-5 py-2.5 font-mono text-xs uppercase tracking-[0.14em] text-bg transition-colors duration-300 hover:bg-ink"
-            >
-              Book a Call
-            </a>
+            <ShinyButton href={site.calendly}>Book a Call</ShinyButton>
           </Magnetic>
         </div>
 
@@ -119,14 +105,9 @@ export default function Navbar() {
               {item.label}
             </a>
           ))}
-          <a
-            href={site.calendly}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex justify-center rounded-control bg-accent px-5 py-3 font-mono text-xs uppercase tracking-[0.14em] text-bg"
-          >
+          <ShinyButton href={site.calendly} className="mt-4 justify-center py-3">
             Book a Call
-          </a>
+          </ShinyButton>
         </nav>
       </div>
     </header>

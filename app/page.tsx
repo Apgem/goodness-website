@@ -8,6 +8,7 @@ import Portfolio from "@/sections/Portfolio";
 import Process from "@/sections/Process";
 import Testimonials from "@/sections/Testimonials";
 import Faq from "@/sections/Faq";
+import BrandOutro from "@/sections/BrandOutro";
 import Contact from "@/sections/Contact";
 import Footer from "@/sections/Footer";
 import Marquee from "@/components/ui/Marquee";
@@ -31,6 +32,7 @@ export default function Home() {
         {/* Renders null until testimonials or an Upwork URL land in content.ts */}
         <Testimonials />
         <Faq />
+        <BrandOutro />
         <Contact />
       </main>
       <Footer />

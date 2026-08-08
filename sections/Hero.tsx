@@ -1,8 +1,9 @@
 "use client";
 
 import { RevealText, Reveal } from "@/components/ui/RevealText";
+import { FlipWords } from "@/components/ui/flip-words";
+import { ButtonWithIcon } from "@/components/ui/button-with-icon";
 import Magnetic from "@/components/ui/Magnetic";
-import HeroCards from "@/components/ui/HeroCards";
 import { scrollToSection } from "@/components/providers/SmoothScrollProvider";
 import { hero, site } from "@/lib/content";
 
@@ -15,13 +16,8 @@ export default function Hero() {
     >
       <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
 
-      {/* Floating product cards over the video — the premium reference feel. */}
-      <HeroCards />
-
       {/* Text is held to the left half on wide screens — the hero video
-          occupies the right, offset to viewport*0.24 in HeroVideo.
-          z-20 keeps the headline above the floating cards (z-10) as a safety
-          net, so text can never be covered even if a card drifts near it. */}
+          occupies the right, offset to viewport*0.24 in HeroVideo. */}
       <div className="relative z-20 mx-auto w-full max-w-[88rem] px-6 md:px-10 lg:max-w-[88rem] lg:pr-[42%]">
         <Reveal delay={1.0} y={14}>
           <span className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/60 px-4 py-2 backdrop-blur-sm">
@@ -33,8 +29,10 @@ export default function Hero() {
         </Reveal>
 
         <h1 className="mt-9 max-w-[18ch] text-hero display">
-          <RevealText as="span" text={hero.headline[0]} delay={1.05} className="block" />
-          <RevealText as="span" text={hero.headline[1]} delay={1.15} className="block" />
+          <Reveal as="span" delay={1.05} y={14} className="block">
+            {hero.headlineLead} <FlipWords words={hero.audiences} className="text-accent" />
+          </Reveal>
+          <RevealText as="span" text={hero.headlineSecondLine} delay={1.15} className="block" />
           <RevealText
             as="span"
             text={hero.headlineAccent}
@@ -63,13 +61,9 @@ export default function Hero() {
             </Magnetic>
 
             <Magnetic strength={0.3}>
-              <button
-                onClick={() => scrollToSection("#portfolio")}
-                className="inline-flex items-center gap-2 rounded-control border border-line-strong px-7 py-4 font-mono text-xs uppercase tracking-[0.14em] text-ink transition-colors duration-300 ease-expo hover:border-accent hover:text-accent"
-              >
+              <ButtonWithIcon onClick={() => scrollToSection("#portfolio")}>
                 {hero.ctaSecondary}
-                <span aria-hidden>↓</span>
-              </button>
+              </ButtonWithIcon>
             </Magnetic>
           </div>
         </Reveal>

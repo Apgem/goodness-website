@@ -1,5 +1,6 @@
 import Section from "@/components/ui/Section";
-import { RevealText, Reveal } from "@/components/ui/RevealText";
+import { RevealText } from "@/components/ui/RevealText";
+import { MagicText } from "@/components/ui/magic-text";
 import { about } from "@/lib/content";
 
 export default function About() {
@@ -10,13 +11,13 @@ export default function About() {
           <RevealText as="span" text={about.headline} stagger={0.05} />
         </h2>
 
-        <div className="max-w-[62ch] space-y-6">
+        <div className="max-w-[62ch] space-y-8">
           {about.body.map((para, i) => (
-            <Reveal key={i} delay={i * 0.06}>
-              <p className="text-base leading-relaxed text-muted md:text-lg">
-                {para}
-              </p>
-            </Reveal>
+            <MagicText
+              key={i}
+              text={para}
+              className="text-base font-normal leading-relaxed text-muted md:text-lg"
+            />
           ))}
         </div>
       </div>
