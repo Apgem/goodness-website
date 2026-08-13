@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Canvas, advance } from "@react-three/fiber";
 import { PerformanceMonitor } from "@react-three/drei";
 import HeroVideo from "./HeroVideo";
+import GLSLHills from "./GLSLHills";
 import { setAdvance } from "@/lib/render-loop";
 import { TIER_SETTINGS, type RenderTier } from "@/lib/use-render-tier";
 
@@ -43,6 +44,7 @@ export default function Scene({ tier }: { tier: Exclude<RenderTier, "none"> }) {
       <PerformanceMonitor
         onDecline={() => setDprMax((d) => Math.max(1, d - 0.25))}
       >
+        <GLSLHills />
         <HeroVideo />
       </PerformanceMonitor>
     </Canvas>
