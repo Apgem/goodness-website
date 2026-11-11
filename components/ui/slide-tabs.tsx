@@ -61,7 +61,7 @@ export function SlideTabs({
           <a
             href={tab.href}
             onClick={(e) => onSelect(tab.href, e)}
-            className={`block font-mono text-xs uppercase tracking-[0.14em] transition-colors duration-300 ${
+            className={`block whitespace-nowrap font-mono text-xs uppercase tracking-[0.14em] transition-colors duration-300 ${
               hovered === tab.href ? "text-bg" : "text-muted hover:text-ink"
             }`}
           >

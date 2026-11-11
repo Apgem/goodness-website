@@ -101,11 +101,25 @@ function Panel({
         style={{ transformOrigin: "bottom left" }}
       >
         <div className="lg:w-[46%]">
-          {project.featured ? (
-            <span className="mb-6 inline-block rounded-full border border-accent/40 bg-accent-dim px-3 py-1.5 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-accent">
-              Featured Build
+          <div className="mb-6 flex flex-wrap items-center gap-2">
+            {project.featured ? (
+              <span className="inline-block rounded-full border border-accent/40 bg-accent-dim px-3 py-1.5 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-accent">
+                Featured Build
+              </span>
+            ) : null}
+            {/* Honest signal, not a sales badge — distinguishes a live,
+                paying-customer product from an unbilled MVP so a visitor
+                doesn't assume every card below is the same kind of proof. */}
+            <span
+              className={`inline-block rounded-full border px-3 py-1.5 font-mono text-[0.6rem] uppercase tracking-[0.14em] ${
+                project.status === "Production"
+                  ? "border-success/40 bg-success/10 text-success"
+                  : "border-line-strong bg-surface-2 text-faint"
+              }`}
+            >
+              {project.status}
             </span>
-          ) : null}
+          </div>
 
           <span className="font-mono text-xs uppercase tracking-[0.2em] text-faint">
             {num} — {project.tagline}

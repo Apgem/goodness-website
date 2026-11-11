@@ -7,6 +7,7 @@ import Services from "@/sections/Services";
 import Portfolio from "@/sections/Portfolio";
 import Process from "@/sections/Process";
 import Testimonials from "@/sections/Testimonials";
+import Qualifier from "@/sections/Qualifier";
 import Faq from "@/sections/Faq";
 import BrandOutro from "@/sections/BrandOutro";
 import Contact from "@/sections/Contact";
@@ -31,6 +32,7 @@ export default function Home() {
         <Process />
         {/* Renders null until testimonials or an Upwork URL land in content.ts */}
         <Testimonials />
+        <Qualifier />
         <Faq />
         <BrandOutro />
         <Contact />

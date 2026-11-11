@@ -88,13 +88,17 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile sheet */}
+      {/* Mobile sheet. max-h-[calc(100dvh-5rem)] (viewport minus the 5rem
+          header) instead of a fixed cap — 6 items fit under max-h-96, but the
+          7th (added for the qualifier) pushed "Contact" and the CTA button
+          off-screen with no way to reach them. overflow-y-auto is the
+          fallback if a future item list still doesn't fit a short phone. */}
       <div
         className={`overflow-hidden border-t border-line bg-bg/95 backdrop-blur-xl transition-[max-height] duration-500 ease-expo md:hidden ${
-          open ? "max-h-96" : "max-h-0 border-t-0"
+          open ? "max-h-[calc(100dvh-5rem)]" : "max-h-0 border-t-0"
         }`}
       >
-        <nav className="flex flex-col gap-1 px-6 py-6">
+        <nav className="flex max-h-[calc(100dvh-5rem)] flex-col gap-1 overflow-y-auto px-6 py-6">
           {nav.map((item) => (
             <a
               key={item.href}

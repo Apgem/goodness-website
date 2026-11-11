@@ -42,6 +42,7 @@ export const nav = [
   { label: "Services", href: "#services" },
   { label: "Portfolio", href: "#portfolio" },
   { label: "Process", href: "#process" },
+  { label: "Is this a fit?", href: "#qualifier" },
   { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#contact" },
 ] as const;
@@ -155,6 +156,10 @@ export const portfolio = {
   projects: [
     {
       featured: true,
+      // Lifted straight out of the existing `result` string below, not a new
+      // claim — just surfaced as a scannable badge instead of buried in fine
+      // print at the bottom of the card.
+      status: "Production",
       name: "LeadCore AI",
       tagline: "Claude-Powered Lead Qualification SaaS",
       body: "A multi-tenant SaaS platform where Claude API scores every incoming lead 0–100, extracts intent signals, and fires personalized SMS or email automatically. No human in the loop for routine leads. High-intent leads get routed to a human rep with a Claude-written context brief already prepared.",
@@ -174,6 +179,7 @@ export const portfolio = {
     },
     {
       featured: false,
+      status: "Production",
       name: "InsureTrack",
       tagline: "Renewal Automation SaaS for Insurance Agents",
       body: "A renewal automation platform for independent insurance agents. Claude generates personalized renewal reminders and cross-sell alerts per client. Automated email and SMS sequences fire before renewal dates. Agents see a live renewal radar showing clients due in 30, 60, and 90 days.",
@@ -190,6 +196,7 @@ export const portfolio = {
     },
     {
       featured: false,
+      status: "Prototype",
       name: "Noveraq",
       tagline: "AI-Powered Revenue Discrepancy Detection",
       body: "An MVP prototype that uses Claude API to extract commercial terms from PDF contracts, compare them against billing CSV data, and surface revenue discrepancies with estimated financial impact. Built for B2B finance teams losing revenue because contract terms don't make it into billing systems.",
@@ -208,6 +215,7 @@ export const portfolio = {
     },
     {
       featured: false,
+      status: "Production",
       name: "USA Care Living",
       tagline: "Claude AI Lead Scoring + GoHighLevel Automation",
       body: "A complete growth engineering system for a veteran career transition platform. Built a silent Claude AI lead scoring engine that analyzes veteran behavior and syncs intent scores to GoHighLevel custom fields. 11 automation workflows, 13 custom fields, 4 smart lists, and cross-platform tracking across Facebook Pixel, GA4, and YouTube API.",
@@ -346,6 +354,82 @@ export const contact = {
     "$10,000+",
     "Not sure yet",
   ],
+} as const;
+
+/**
+ * Four-step scored qualifier. Weights are a business decision, not a design
+ * one — edit the `score` values here, not the component, if the bar needs to
+ * move. Max score is 12 (3 points available per step).
+ *
+ * Thresholds (see Qualifier.tsx `outcomeFor`):
+ *   9–12  -> good fit, straight to booking
+ *   5–8   -> workable, but ask to confirm scope/budget on the call first
+ *   0–4   -> honest decline, with a cheaper path forward instead of a pitch
+ */
+export const qualifier = {
+  label: "Is this a fit?",
+  headline: "60 Seconds, Then You'll Know.",
+  sub: "Four quick questions instead of a sales call neither of us needs. Answer honestly — the point is to save your time if it's not a fit, not to talk you into one.",
+  steps: [
+    {
+      id: "project",
+      question: "What are you building?",
+      options: [
+        { label: "A production SaaS product", score: 3 },
+        { label: "Claude/AI integration or automation for an existing product", score: 3 },
+        { label: "A premium website that needs to convert and perform", score: 2 },
+        { label: "Not sure yet — I have an idea, not a spec", score: 1 },
+      ],
+    },
+    {
+      id: "budget",
+      question: "What's the budget for this?",
+      options: [
+        { label: "$10,000+", score: 3 },
+        { label: "$5,000 – $10,000", score: 2 },
+        { label: "$2,000 – $5,000", score: 1 },
+        { label: "Under $2,000", score: 0 },
+        { label: "Not sure yet", score: 1 },
+      ],
+    },
+    {
+      id: "timeline",
+      question: "When do you need this started?",
+      options: [
+        { label: "In the next 2 weeks", score: 3 },
+        { label: "Within 1–2 months", score: 2 },
+        { label: "Flexible — a few months out", score: 1 },
+        { label: "Just exploring, no timeline", score: 0 },
+      ],
+    },
+    {
+      id: "authority",
+      question: "Who makes the call to move forward?",
+      options: [
+        { label: "Me — I can approve and pay a deposit directly", score: 3 },
+        { label: "Me, with one other person's sign-off", score: 2 },
+        { label: "I'm gathering options to present to someone else", score: 1 },
+        { label: "Just researching for now", score: 0 },
+      ],
+    },
+  ],
+  outcomes: {
+    good: {
+      heading: "This looks like a good fit.",
+      body: "That's a project I can take on properly — fixed scope, milestone billing, a live URL from week one. Book a discovery call and we'll turn this into a real plan.",
+      cta: "Book a Discovery Call",
+    },
+    maybe: {
+      heading: "Could work, with the right scope.",
+      body: "There's enough here to be worth a short call — mainly to pin down budget and timeline before either of us commits. No pressure either way; worst case it takes 15 minutes to find out it isn't the right fit yet.",
+      cta: "Book a 15-Minute Call",
+    },
+    decline: {
+      heading: "I'm probably not the right fit for this, right now.",
+      body: "Honestly — at this budget/timeline I'd either be rushing something that deserves more care, or you'd be overpaying for less than a template or a no-code tool would get you today. That's not a knock on the idea; it's just not where I add the most value yet. Revisit this if the scope or budget changes, or email me directly and I'll point you somewhere cheaper if I can.",
+      cta: "Email Me Instead",
+    },
+  },
 } as const;
 
 export const footer = {
