@@ -157,12 +157,20 @@ export default function HeroVideo() {
     const { width, height } = state.viewport;
     const wide = width > 9;
     const offsetX = wide ? width * 0.24 : 0;
-    const offsetY = wide ? -0.2 : height * 0.14;
+    const offsetY = wide ? -0.2 : -height * 0.46;
+
+    // The plane's world size is fixed (PLANE_H, set for desktop framing) but
+    // visible WIDTH shrinks with a narrower/portrait aspect ratio while
+    // visible height stays constant (vertical fov). Unscaled, the plane is
+    // wider than the entire screen on a phone — he renders zoomed-in behind
+    // the headline instead of a small portrait beneath it. Only shrink on
+    // the narrow branch; wide/desktop framing is untouched.
+    const scale = wide ? 1 : Math.min(1, (width * 0.5) / (PLANE_H * ASPECT));
 
     m.uniforms.uHover.value = d.hover;
     m.uniforms.uPointer.value.set(
-      (d.px * width) / 2 / (PLANE_H * ASPECT) - offsetX / (PLANE_H * ASPECT),
-      (d.py * height) / 2 / PLANE_H - offsetY / PLANE_H,
+      (d.px * width) / 2 / (PLANE_H * ASPECT * scale) - offsetX / (PLANE_H * ASPECT * scale),
+      (d.py * height) / 2 / (PLANE_H * scale) - offsetY / (PLANE_H * scale),
     );
 
     // --- scrub playback by scroll -------------------------------------------
@@ -195,6 +203,7 @@ export default function HeroVideo() {
       d.rx = damp(d.rx, -d.py * 0.1, 0.004, dt);
       group.current.rotation.y = d.ry;
       group.current.rotation.x = d.rx;
+      group.current.scale.setScalar(scale);
 
       group.current.position.x = offsetX + d.px * 0.12;
       // Rises gently as you scroll away, plus a slow idle float.
